@@ -1,0 +1,41 @@
+upstream macode {
+        keepalive 64;
+        server 127.0.0.1:5000;
+}
+
+server {
+    listen       8020;
+    server_name macode.myphammocha.com.vn www.macode.myphammocha.com.vn;
+
+    # ssl on;
+    # ssl_certificate      /etc/nginx/ssl/confession/server.crt;
+    # ssl_certificate_key  /etc/nginx/ssl/confession/server.key;
+    # ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+
+    access_log off;
+    # access_log  /var/log/nginx/confession.access.log;
+    # error_log   /var/log/nginx/confession.error.log;
+
+    error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location /static {
+        access_log   off;
+        expires      30d;
+        root /var/www/macode;
+    }
+
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    location / {
+            proxy_read_timeout 600s;
+            proxy_pass       http://macode;
+            proxy_set_header Host      $host;
+            proxy_http_version 1.1;
+            proxy_set_header Connection "";
+    }
+}

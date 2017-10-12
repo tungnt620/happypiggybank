@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block main_content %}
+    <div class="search">
+        <div class="row">
+            <div class="col-12">
+                <i>Câu chuyện này được gửi vào lúc {{ story.created_at }}</i>
+            </div>
+        </div>
+
+        <div class="row" style="text-align: center;">
+            <div class="col-12">
+                <h4>
+                    {{ story.message }}
+                </h4>
+            </div>
+        </div>
+        <br><br>
+        {% if story.files %}
+        <div class="row" style="text-align: center;">
+            {% for type, url in story.list_file_meta_data %}
+                <div class="col-sm-4">
+                    {% if type == 'image' %}
+                        <div class="card" style="width: 100%;">
+                          <img class="card-img-top" src="{{ url }}" alt="Card image cap">
+                        </div>
+                    {% else %}
+                        <video width="340" controls>
+                          <source src="{{ url }}" type="video/mp4">
+                        </video>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+        </div>
+        {% endif %}
+    
+    </div>
+    <br>
+    <br>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+    </script>
+{% endblock %}

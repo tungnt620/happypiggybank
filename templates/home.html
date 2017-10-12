@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block main_content %}
+    <div class="search">
+        {% if err_message %}
+            <div class="row">
+                <div class="col-12" style="color: red; text-align: center">
+                    <i>{{ err_message }}</i>
+                </div>
+            </div>
+        {% endif %}
+        <div class="form-row" style="max-width: 300px; margin: auto; text-align: center; display: block;">
+            <img src="{% static 'img/piggybank.svg' %}">
+        </div>
+
+        <div class="row">
+            <div class="col-6" style="display: block; text-align: center">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    Bỏ ống heo
+                </button>
+            </div>
+            <div class="col-6" style="display: block; text-align: center">
+                <button class="btn btn-info" onclick="location.href='{% url 'pick_story' %}'">Lấy ống heo</button>
+            </div>
+        </div>
+
+    </div>
+
+
+<div  class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Hãy viết một chuyện về 2 chúng ta nào</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="form" method="post" action="{% url 'add_story' %}" enctype="multipart/form-data">{% csrf_token %}
+
+          <div class="modal-body">
+            <div class="form-group row">
+                <div class="col-12">
+                  <textarea name="message" id="message" placeholder="Tin nhắn" class="form-control" rows="3"></textarea>
+
+                </div>
+            </div>
+            <div class="form-group row" style="text-align: center;" >
+                <div class="col-12">
+                    <label class="btn btn-primary" for="my-file-selector">
+                        <input id="my-file-selector" name="files" type="file" style="display:none" multiple
+                        onchange="showImageName(this)">
+                        Hình ảnh/ Video
+                    </label>
+                    <span class='label label-info' id="upload-file-info"></span>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="drop_to_piggy_bank" type="submit" class="btn btn-primary">Bỏ ống heo</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Thôi</button>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+    $('#btn_happy').on('shown.bs.modal', function () {
+      $('#message').focus()
+    });
+
+    function showImageName(obj) {
+        var textShow = "";
+        for (var i = 0; i < obj.files.length; ++i) {
+            textShow += "<br>" + obj.files[i].name;
+        }
+        $('#upload-file-info').html(textShow)
+    }
+
+    </script>
+{% endblock %}

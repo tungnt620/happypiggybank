@@ -1,0 +1,13 @@
+*.pyc
+target.py
+.idea
+*/.idea/*
+../.idea
+root/.idea
+main.log
+dump.rdb
+client_secret.json
+.project
+.pydevproject
+.settings/
+db.sqlite3

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load util_tags %}
+
+{% block title %}
+    {{ conf.content|truncatechars:70 }}
+{% endblock %}
+{% block desc %}
+    {{ conf.content|truncatechars:160 }}
+{% endblock %}
+
+{% block photo_head %}
+    {% if conf.picture %}
+        <meta property="og:image" content="{{ conf.full_picture|safe }}" />
+    {% else %}
+        {% with category=cate_id_obj_map|get_item:conf.category_id %}
+            <meta property="og:image" content="{{ category.full_picture|safe }}" />
+        {% endwith %}
+    {% endif %}
+{% endblock %}
+
+{% block seo %}
+    <link rel="canonical" href="{{ request.path }}" />
+{% endblock %}
+
+{% block main_content %}
+
+<div class="OD0hZKw8Big2dmb58ooQR">
+    <div class="_1ZT7yIlgPacvZwc3GZOWRe">
+        <h1 class="_2eQIUSBQQu4zxfQH3vajQF">
+            {{ conf.content|truncatechars:140 }}
+        </h1>
+        <div class="_2C8XJ2Jig9MJ6vBKg9ME84">
+            <span class="_1NFDX8v5yTysOWk5FDA_KX date_published">{{ conf.published|date:"Y-m-d H:i:s" }}</span>
+            <span class="_2MTEik12ajKGv-SE0UKjTX detail_stat">{{ conf.like_count }} <span class="icon-like"></span></span>
+            <span class="_2MTEik12ajKGv-SE0UKjTX detail_stat">{{ conf.comment_count }} <span class="icon-bubble"></span></span>
+            <span class="lw17SoBhxwiI-BreuHvIe">{{ conf.view_count }} <span class="icon-eye"></span></span>
+        </div>
+        {% if conf.type == 'photo' and conf.full_picture %}
+        <p style="text-align:center">
+            <img alt="{{ conf.content|truncatechars:140 }}" src="{{ conf.full_picture }}" style="width:100%">
+        </p>
+        {% elif conf.type == 'video' and conf.video_link %}
+        <p style="text-align:center">
+            {% if 'youtube' in conf.video_link %}
+                <iframe width="100%" height="auto" src="{{ conf.video_link }}"></iframe>
+            {% elif 'akamaihd' in conf.video_link or 'fbcdn' in conf.video_link or 'cdninstagram' in conf.video_link %}
+                <video controls>
+                  <source src="{{ conf.video_link }}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+            {% else %}
+                <a target="_blank" href="{{ conf.video_link }}">{{ conf.video_link }}</a>
+            {% endif %}
+        </p>
+        {% endif %}
+        <div class=" news-cke">
+            {{ conf.content|linebreaks }}
+        </div>
+        {% if conf.type == 'link' %}
+            <p style="text-align:center">
+                <a target="_blank" href="{{ conf.status_link }}">{{ conf.link_name }}</a>
+            </p>
+        {% endif %}
+    </div>
+    <div class="_1_9wpNTg9BsJ8Tz-YkJwe5">
+        {% if relative_confs %}
+        <div class="_291kIT9RwuTzddwemGUMm-">Confession khác</div>
+        {% endif %}
+        {% for relative_conf in relative_confs %}
+            <a href="{% url 'detail' relative_conf.slug relative_conf.status_id %}">
+                <div class="_1dnI-OPOgI9EFLmZRoB1wL">
+                    {% if relative_conf.picture %}
+                        <div class="_3vkxgtVyql42CM_ylD2aax" style="background-image: url('{{ relative_conf.picture }}');"></div>
+                    {% else %}
+                        {% with category=cate_id_obj_map|get_item:relative_conf.category_id %}
+                            <div class="_3vkxgtVyql42CM_ylD2aax" style="background-image: url('{{ category.picture }}');"></div>
+                        {% endwith %}
+                    {% endif %}
+                    <div class="_1IpjzGI8ehiKBMr6uMHNfP">
+                        <div class="rAmxGqR4A7etTXmVmlcUd">
+                            {{ relative_conf.content|truncatechars:140 }}
+                        </div>
+                        <div class="_3H5U-4xg3u6GSLEvGTtTNB" style="text-align: right">
+                            <span class="lw17SoBhxwiI-BreuHvIe icon-bubble"> {{ relative_conf.comment_count }}</span>
+                            <span class="lw17SoBhxwiI-BreuHvIe icon-eye"> {{ relative_conf.view_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+
+    </div>
+
+    <div class="_6I65ewJZDr3r62xolVtDS">
+        {% if comments.top %}
+        <div class="_291kIT9RwuTzddwemGUMm-">Bình luận hay</div>
+        {% endif %}
+
+        {% include 'comments.html' with comments=comments.top %}
+    </div>
+
+    <div class="_6I65ewJZDr3r62xolVtDS">
+        {% if comments.newest %}
+        <div class="_291kIT9RwuTzddwemGUMm-">Bình luận mới</div>
+        {% endif %}
+        {% include 'comments.html' with comments=comments.newest is_has_more=comments.is_has_more %}
+
+    </div>
+
+
+</div>
+    <div class='scrolltop'>
+    <div class='scroll icon'><i class="fa fa-4x fa-angle-up"></i></div>
+</div>
+<button onclick="topFunction()" id="scroll_to_top" title="Go to top">Top</button>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+    var confession_slug = '{{ confession_slug }}';
+    var confession_id = '{{ confession_id }}';
+    </script>
+{% endblock %}

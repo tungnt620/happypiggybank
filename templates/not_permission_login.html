@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block main_content %}
+    <div class="col-12" style="max-width: 600px; margin: auto; text-align: center;">
+        <span style="color: red;">Rất tiếc, hiện tại bạn chưa có tài khoản trên hệ thống chúng tôi!</span>
+        <br>
+        <br>
+        <button onclick="location.href='{% url 'home' %}'" class="btn btn-outline-success">Quay lại</button>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

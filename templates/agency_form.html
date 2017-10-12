@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block main_content %}
+
+    <h2>
+        {% if form.instance.id %}Chỉnh sửa thông tin{% else %}Tạo mới{% endif %}
+    </h2>
+
+    <br>
+
+    <form id="faq_form" method="post" enctype="multipart/form-data" class="form-horizontal">{% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div class="form-group row">
+            <label class="col-md-3 form-control-label" for="id_code">Code</label>
+            <div class="col-md-9">
+                {{ form.code.errors }}
+                {{ form.code|add_class:"form-control" }}
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-md-3 form-control-label" for="id_name">Tên</label>
+            <div class="col-md-9">
+                {{ form.name.errors }}
+                {{ form.name|add_class:"form-control" }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 form-control-label" for="id_address">Địa chỉ</label>
+            <div class="col-md-9">
+                {{ form.address.errors }}
+                {{ form.address|add_class:"form-control" }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 form-control-label" for="id_phone">Số điện thoại</label>
+            <div class="col-md-9">
+                {{ form.phone.errors }}
+                {{ form.phone|add_class:"form-control" }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 form-control-label" for="id_type">Phân cấp</label>
+            <div class="col-md-9">
+                {{ form.type.errors }}
+                {{ form.type|add_class:"form-control" }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 form-control-label" for="id_birthday">Ngày sinh</label>
+            <div class="col-md-9">
+                {{ form.birthday.errors }}
+                {{ form.birthday|add_class:"form-control" }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 form-control-label" for="id_date_participate">Ngày tham gia</label>
+            <div class="col-md-9">
+                {{ form.date_participate.errors }}
+                {{ form.date_participate|add_class:"form-control" }}
+            </div>
+        </div>
+
+        <input type="hidden" name="next" value="{{ request.META.HTTP_REFERER }}">
+
+        <div class="form-group row">
+            <div class="col-md-12">
+                <center>
+                    <button type="button" onclick="window.history.back();" class="btn btn-secondary">
+                        <i class="fa fa-step-backward "></i> Quay lại</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-dot-circle-o"></i> Lưu</button>
+                </center>
+            </div>
+        </div>
+
+    </form>
+
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+    </script>
+{% endblock %}

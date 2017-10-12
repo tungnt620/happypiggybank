@@ -1,0 +1,1 @@
+* */1 * * *   root    cd /data/release/confession && sh deploy/cronjob/activate_confession.sh

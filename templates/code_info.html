@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block main_content %}
+        <div class="col-12" style="max-width: 600px; margin: auto; text-align: center;">
+            {% if agency %}
+            <div class="row">
+                <div class="col-12" style="text-align: center">
+                    <h3 style="font-weight: 700">Mã đại lý: {{ agency.code }}</h3>
+                </div>
+            </div>
+            <br><br>
+            <div class="row">
+                <div class="col-4">
+                    <label style="font-weight: 700">Tên đại lý</label>
+                </div>
+                <div class="col-7">
+                    <label><p>{{ agency.name }}</p></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <label style="font-weight: 700">Địa chỉ</label>
+                </div>
+                <div class="col-7">
+                    <label><p>{% if agency.address %}{{ agency.address }} {% else %}Không có{% endif %}</p></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <label style="font-weight: 700">Số điện thoại</label>
+                </div>
+                <div class="col-7">
+                    <label><p>{% if agency.phone %}{{ agency.phone }} {% else %}Không có{% endif %}</p></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <label style="font-weight: 700">Phân cấp</label>
+                </div>
+                <div class="col-7">
+                    <label><p>{% if agency.type %}{{ agency.type }} {% else %}Không có{% endif %}</p></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <label style="font-weight: 700">Website</label>
+                </div>
+                <div class="col-7">
+                    <label><p>{% if agency.website %}<a href="{{ agency.website }}" target="_blank">{{ agency.website }}</a> {% else %}Không có{% endif %}</p></label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12" style="text-align: center">
+                    <button type="button" onclick="window.history.back();" class="btn btn-secondary">
+                        <i class="fa fa-step-backward "></i> Quay lại</button>
+                </div>
+            </div>
+
+            {% else %}
+                <span style="color: red;">Rất tiếc, mã code <b>{{ code }}</b> không thuộc hệ thống chúng tôi!</span>
+            {% endif %}
+        </div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
