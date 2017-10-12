@@ -8,11 +8,11 @@
                 <i>Câu chuyện này được gửi vào lúc {{ story.created_at }}</i>
             </div>
         </div>
-
+        <br><br>
         <div class="row" style="text-align: center;">
             <div class="col-12">
                 <h4>
-                    {{ story.message }}
+                    {{ story.message|linebreaks }}
                 </h4>
             </div>
         </div>

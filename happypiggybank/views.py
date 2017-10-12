@@ -29,6 +29,7 @@ class AddStoryView(View):
         files = request.FILES.getlist('files')
         if form.is_valid():
             file_names = handle_upload_files(files)
+            form.instance.message = form.instance.message.strip()
             form.instance.files = file_names
             form.save()
 
