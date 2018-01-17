@@ -1,20 +1,43 @@
+{% load staticfiles i18n %}
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <a class="navbar-brand" href="/">Home</a>
 
-{#  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">#}
-{#    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">#}
-{#      <li class="nav-item active">#}
-{#        <a class="nav-link" target="_blank" href="https://confession.vn/">Confession <span class="sr-only">(current)</span></a>#}
-{#      </li>#}
-{#    </ul>#}
-{#    <div class="my-2 my-lg-0">#}
-{#      {% if request.user.id %}#}
-{#      {% else %}#}
-{#      <button class="btn btn-outline-success my-2 my-sm-0" type="button">Đăng nhập</button>#}
-{#      {% endif %}#}
-{#    </div>#}
-{#  </div>#}
+
+
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+    </ul>
+    <div class="my-2 my-lg-0">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      {% if request.user.is_authenticated %}
+      <li class="nav-item">
+        <span class="nav-link">Xin chào, {{ request.user.username }}</span>
+      </li>
+      <li class="nav-item">
+        {# URL provided by django-allauth/account/urls.py #}
+        <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
+      </li>
+    {% else %}
+      <li class="nav-item">
+        {# URL provided by django-allauth/account/urls.py #}
+        <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+      </li>
+      <li class="nav-item">
+        {# URL provided by django-allauth/account/urls.py #}
+        <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+      </li>
+    {% endif %}
+    </ul>
+    </div>
+  </div>
+
+
+
+
+
 </nav>

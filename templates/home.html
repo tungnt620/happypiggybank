@@ -10,18 +10,32 @@
                 </div>
             </div>
         {% endif %}
+
+{#        <div id="commentable-area">#}
+{#          <p data-section-id="1" class="commentable-section">#}
+{#            This is a section that can be commented on.#}
+{#          </p>#}
+{#          <p data-section-id="2" class="commentable-section">#}
+{#            This is a another section that can be commented on.#}
+{#          </p>#}
+{#          <p data-section-id="3" class="commentable-section">#}
+{#            This is yet another section that can be commented on.#}
+{#          </p>#}
+{#        </div>#}
+
+
         <div class="form-row" style="max-width: 300px; margin: auto; text-align: center; display: block;">
             <img src="{% static 'img/piggybank.svg' %}">
         </div>
 
         <div class="row">
             <div class="col-6" style="display: block; text-align: center">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <button type="button" class="btn btn-primary" {% if request.user.is_authenticated %} data-toggle="modal" data-target="#exampleModal" {% else %}onclick="location.href='{% url 'account_login' %}'"{% endif %} >
                     Bỏ ống heo
                 </button>
             </div>
             <div class="col-6" style="display: block; text-align: center">
-                <button class="btn btn-info" onclick="location.href='{% url 'pick_story' %}'">Lấy ống heo</button>
+                <button class="btn btn-info" onclick="location.href='{% if request.user.is_authenticated %}{% url 'pick_story' %}{% else %}{% url 'account_login' %}{% endif %}'">Lấy ống heo</button>
             </div>
         </div>
 
@@ -32,7 +46,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Hãy viết một chuyện về 2 chúng ta nào</h5>
+        <h5 class="modal-title">Hãy viết một chuyện về các bạn nào</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -82,6 +96,75 @@
         }
         $('#upload-file-info').html(textShow)
     }
+
+{#    // First require it.#}
+{#    var SideComments = require('side-comments');#}
+{##}
+{#    var currentUser = {#}
+{#                          id: 1,#}
+{#                          avatarUrl: "https://scontent.fsgn4-1.fna.fbcdn.net/v/t1.0-1/p160x160/10320286_440361769434572_997458374242547953_n.jpg?oh=8e8f26cf803785ddec2bce85f41fe659&oe=5A8782EB",#}
+{#                          name: "Tung Nguyen"#}
+{#                        };#}
+{##}
+{#    var existingComments = [#}
+{#                              {#}
+{#                                "sectionId": "1",#}
+{#                                "comments": [#}
+{#                                  {#}
+{#                                    "authorAvatarUrl": "http://f.cl.ly/items/1W303Y360b260u3v1P0T/jon_snow_small.png",#}
+{#                                    "authorName": "Jon Sno",#}
+{#                                    "comment": "I'm Ned Stark's bastard. Related: I know nothing."#}
+{#                                  },#}
+{#                                  {#}
+{#                                    "authorAvatarUrl": "http://f.cl.ly/items/2o1a3d2f051L0V0q1p19/donald_draper.png",#}
+{#                                    "authorName": "Donald Draper",#}
+{#                                    "comment": "I need a scotch."#}
+{#                                  }#}
+{#                                ]#}
+{#                              },#}
+{#                              {#}
+{#                                "sectionId": "3",#}
+{#                                "comments": [#}
+{#                                  {#}
+{#                                    "authorAvatarUrl": "http://f.cl.ly/items/0l1j230k080S0N1P0M3e/clay-davis.png",#}
+{#                                    "authorName": "Senator Clay Davis",#}
+{#                                    "comment": "These Side Comments are incredible. Sssshhhiiiiieeeee."#}
+{#                                  }#}
+{#                                ]#}
+{#                              }#}
+{#                            ];#}
+{##}
+{#    // Then, create a new SideComments instance, passing in the wrapper element and the optional the current user and any existing comments.#}
+{#    sideComments = new SideComments('#commentable-area', currentUser, existingComments);#}
+{##}
+{##}
+{#    // Listen to "commentPosted", and send a request to your backend to save the comment.#}
+{#    // More about this event in the "docs" section.#}
+{#    sideComments.on('commentPosted', function( comment ) {#}
+{#        comment['csrf'] = '{{ csrf_token }}';#}
+{#        $.ajax({#}
+{#            url: '{% url 'story_comment' %}',#}
+{#            type: 'POST',#}
+{#            data: comment,#}
+{#            success: function( savedComment ) {#}
+{#                // Once the comment is saved, you can insert the comment into the comment stream with "insertComment(comment)".#}
+{#                sideComments.insertComment(comment);#}
+{#            }#}
+{#        });#}
+{#    });#}
+{##}
+{#    // Listen to "commentDeleted" and send a request to your backend to delete the comment.#}
+{#    // More about this event in the "docs" section.#}
+{#    sideComments.on('commentDeleted', function( commentId ) {#}
+{#        $.ajax({#}
+{#            url: '/comments/' + commentId,#}
+{#            type: 'DELETE',#}
+{#            success: function( success ) {#}
+{#                // Do something.#}
+{#            }#}
+{#        });#}
+{#    });#}
+
 
     </script>
 {% endblock %}

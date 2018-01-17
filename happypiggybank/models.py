@@ -15,17 +15,38 @@ class CreateUpdateModel(models.Model):
         abstract = True
 
 
+class HPBGroup(CreateUpdateModel):
+
+    def __unicode__(self):
+        return str(self.pk)
+
+    class Meta:
+        db_table = 'hpb_group'
+
+
+class UserHPBGroup(CreateUpdateModel):
+    user_id = models.BigIntegerField(db_index=True)
+    hpb_group_id = models.BigIntegerField(db_index=True)
+
+    def __unicode__(self):
+        return str(self.pk)
+
+    class Meta:
+        db_table = 'user_hpb_group'
+
+
 class Story(CreateUpdateModel):
     message = models.TextField(default='', blank=True)
     files = models.TextField(null=True, blank=True)
     read_times = models.PositiveSmallIntegerField(default=0)
+    hpb_group_id = models.BigIntegerField(default=0, db_index=True)
 
     def list_file_meta_data(self):
         file_names = self.files.split('|')
         file_meta_data = []
         for file_name in file_names:
             relative_file_url = os.path.join(settings.MEDIA_URL, file_name)
-            if file_name[-3:] in settings.IMAGE_EXTENSION:
+            if file_name[-3:].lower() in settings.IMAGE_EXTENSION:
                 type = 'image'
             else:
                 type = 'video'
@@ -37,3 +58,15 @@ class Story(CreateUpdateModel):
 
     class Meta:
         db_table = 'story'
+
+
+class StoryComment(CreateUpdateModel):
+    section = models.CharField(max_length=255)
+    comment = models.TextField(null=True, blank=True)
+    user_id = models.BigIntegerField(null=False)
+
+    def __unicode__(self):
+        return str(self.comment)
+
+    class Meta:
+        db_table = 'story_comment'

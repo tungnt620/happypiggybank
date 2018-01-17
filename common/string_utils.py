@@ -10,5 +10,5 @@ def is_email_valid(email):
         return False
 
 
-def random_string(size=10, chars=string.lowercase + string.digits):
+def random_string(size=10, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))

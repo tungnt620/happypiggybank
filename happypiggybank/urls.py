@@ -21,8 +21,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^$', views.HomeView.as_view(), name='home'),
     url(r'^add_story$', views.AddStoryView.as_view(), name='add_story'),
-    url(r'^view_story/(?P<story_id>\d+)$', views.ViewStoryView.as_view(), name='view_story'),
-    url(r'^pick_story$', views.PickStoryView.as_view(), name='pick_story')
+    url(r'^view_story/(?P<story_temp_id>.+)$', views.ViewStoryView.as_view(), name='view_story'),
+    url(r'^pick_story$', views.PickStoryView.as_view(), name='pick_story'),
+    url(r'^story/comment$', views.StoryCommentView.as_view(), name='story_comment'),
 ]
 
 if settings.DEBUG is True:

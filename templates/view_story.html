@@ -4,8 +4,13 @@
 {% block main_content %}
     <div class="search">
         <div class="row">
-            <div class="col-12">
-                <i>Câu chuyện này được gửi vào lúc {{ story.created_at }}</i>
+            <div class="col-12 row">
+                <div class="col-12 col-md-6">
+                    <i>Câu chuyện này được gửi vào lúc {{ story.created_at }}</i>
+                </div>
+                <div class="col-12 col-md-6">
+                    <button style="float: right" class="btn btn-info" onclick="location.href='{% url 'pick_story' %}'">Lấy ống heo tiếp</button>
+                </div>
             </div>
         </div>
         <br><br>
@@ -35,7 +40,7 @@
 
         </div>
         {% endif %}
-    
+
     </div>
     <br>
     <br>
