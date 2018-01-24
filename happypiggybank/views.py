@@ -23,16 +23,34 @@ class BaseView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(BaseView, self).get_context_data(**kwargs)
-        context['group'] = self.get_hpb_group(self.request)
+        context['group_data'] = self.get_hpb_group_data(self.request)
         return context
 
-    def get_hpb_group(self, request):
-        group = models.UserHPBGroup.objects.filter(user_id=request.user.pk).first()
-        if not group:
-            group = models.HPBGroup.objects.create()
-            models.UserHPBGroup.objects.create(user_id=request.user.pk,
-                                               hpb_group_id=group.pk)
-        return group
+    def get_hpb_group_data(self, request):
+        if request.user.is_authenticated:
+            groups = models.HPBGroup.objects.raw('SELECT * FROM hpb_group gr ' +
+                                                 'INNER JOIN ' +
+                                                 '(select hpb_group_id from user_hpb_group where user_id=%s) ugr ' +
+                                                 'on gr.id = ugr.hpb_group_id ', [request.user.id])
+            if not groups:
+                group = models.HPBGroup.objects.create(name=request.user.username)
+                groups = [group.to_dict()]
+                models.UserHPBGroup.objects.create(user_id=request.user.pk,
+                                                   hpb_group_id=group.pk)
+            group_dict_list = [group.to_dict() for group in groups]
+            current_group_select = request.session.get('current_group_select', None)
+            if not current_group_select:
+                current_group_select = groups[0].id
+                request.session['current_group_select'] = current_group_select
+
+            group_data = {'my_groups': group_dict_list,
+                          'current_group_value': current_group_select,
+                          'visible': True}
+        else:
+            group_data = {'my_groups': [],
+                          'current_group_value': '',
+                          'visible': False}
+        return json.dumps(group_data)
 
 
 class AuthView(BaseView):
@@ -47,7 +65,9 @@ class HomeView(BaseView):
     template_name = 'home.html'
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+        context = self.get_context_data(**kwargs)
+        print(context['group_data'])
+        return render(request, self.template_name, context)
 
 
 class AddStoryView(AuthView):
@@ -90,7 +110,7 @@ class PickStoryView(AuthView):
         with connection.cursor() as cursor:
             # For sqlite, if switch to other database need change syntax
             cursor.execute("""SELECT id FROM story WHERE hpb_group_id = %s
-                              ORDER BY RANDOM() LIMIT 1""" % context['group'].pk)
+                              ORDER BY RAND() LIMIT 1""", [request.session['current_group_select']])
             data = cursor.fetchall()
             if data:
                 story_id = data[0][0]
@@ -113,3 +133,12 @@ class StoryCommentView(AuthView):
                                            user_id=request.user.pk)
 
         return HttpResponse(json.dumps(request.POST), content_type="application/json")
+
+
+class SelectGroupView(AuthView):
+    def post(self, request, *args, **kwargs):
+        group_id =request.POST.get('group_id', 0)
+        if group_id:
+            request.session['current_group_select'] = group_id
+
+        return HttpResponse(1)

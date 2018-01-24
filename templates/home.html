@@ -24,8 +24,21 @@
 {#        </div>#}
 
 
-        <div class="form-row" style="max-width: 300px; margin: auto; text-align: center; display: block;">
+        <div class="form-row" style="max-width: 300px; margin: auto; ">
             <img src="{% static 'img/piggybank.svg' %}">
+
+            <div id="group_app" v-if="visible" style="display: block; margin: 0 auto; padding-top: 10px;">
+                <span>Nhóm <el-select v-model="current_group_value" placeholder="Chọn nhóm">
+                    <el-option
+                      v-for="item in my_groups"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id">
+                    </el-option>
+                </el-select>
+            </div>
+
+
         </div>
 
         <div class="row">
@@ -96,6 +109,13 @@
         }
         $('#upload-file-info').html(textShow)
     }
+
+    var group_data = {{ group_data|safe }};
+    var group_app = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#group_app',
+        data: group_data
+    });
 
 {#    // First require it.#}
 {#    var SideComments = require('side-comments');#}

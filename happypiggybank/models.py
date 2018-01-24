@@ -16,9 +16,13 @@ class CreateUpdateModel(models.Model):
 
 
 class HPBGroup(CreateUpdateModel):
+    name = models.CharField(max_length=100)
 
     def __unicode__(self):
         return str(self.pk)
+
+    def to_dict(self):
+        return {'id': self.id, 'name': self.name}
 
     class Meta:
         db_table = 'hpb_group'
@@ -39,6 +43,7 @@ class Story(CreateUpdateModel):
     message = models.TextField(default='', blank=True)
     files = models.TextField(null=True, blank=True)
     read_times = models.PositiveSmallIntegerField(default=0)
+    user_id = models.BigIntegerField(db_index=True)
     hpb_group_id = models.BigIntegerField(default=0, db_index=True)
 
     def list_file_meta_data(self):

@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^view_story/(?P<story_temp_id>.+)$', views.ViewStoryView.as_view(), name='view_story'),
     url(r'^pick_story$', views.PickStoryView.as_view(), name='pick_story'),
     url(r'^story/comment$', views.StoryCommentView.as_view(), name='story_comment'),
+    url(r'^select_group$', views.SelectGroupView.as_view(), name='select_group'),
 ]
 
 if settings.DEBUG is True:
