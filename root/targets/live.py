@@ -7,9 +7,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': "happypiggybank",
-        'USER': "root",
-        'PASSWORD': "jkQz@3nU77",
-        'HOST': '127.0.0.1',
+        'USER': "happypiggybank",
+        'PASSWORD': "happypiggybank",
+        'HOST': 'db_10',
         'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4',
