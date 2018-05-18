@@ -1,4 +1,4 @@
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['45.76.146.131']
 
@@ -7,9 +7,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': "happypiggybank",
-        'USER': "root",
-        'PASSWORD': "jkQz@3nU77",
-        'HOST': '127.0.0.1',
+        'USER': "happypiggybank",
+        'PASSWORD': "happypiggybank",
+        'HOST': 'db_10',
         'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4',
@@ -18,7 +18,7 @@ DATABASES = {
     }
 }
 
-REDIS_HOST = '127.0.0.1'
+REDIS_HOST = 'redis_46'
 REDIS_PORT = 6379
 REDIS_DB = 0
 REDIS_LOCATION = "redis://{host}:{port}/{db}".format(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
